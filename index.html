@@ -4,39 +4,95 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Product Comments</title>
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
 
-        <main class="container">
+    <main class="container-fluid" ng-app="CommentApp" ng-controller="CommentController">
             <section>
                 <img src="img/super-bass-o-matic-76.jpg" alt="product picture" class="product-picture">
                 <h1>The Super Bass-o-Matic '76</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia cumque deserunt ullam repudiandae nisi corporis! Ipsum, ducimus commodi, itaque porro distinctio consequuntur! Autem doloremque numquam nemo ex nulla tempora quis! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde nihil doloribus excepturi quisquam error possimus veritatis facere, commodi cumque ab atque dolore ducimus obcaecati ipsa, impedit! Consequuntur, eligendi iure cumque!</p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia cumque deserunt ullam
+                    repudiandae nisi corporis! Ipsum, ducimus commodi, itaque porro distinctio consequuntur!
+                    Autem doloremque numquam nemo ex nulla tempora quis! Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit. Unde nihil doloribus excepturi quisquam error possimus veritatis facere,
+                    commodi cumque ab atque dolore ducimus obcaecati ipsa, impedit! Consequuntur, eligendi iure cumque!
+                </p>
             </section>
 
-            <section>
+            <section class="addForm">
                 <h2>Add a Comment</h2>
-                <!--  
-                put a form here for entering a new comment
-                the user must select a rating, and enter a name, title, and comment body
-                before the comment can be saved to the server
-                for the rating selection, use the Angular Bootstrap Rating directive 
-                http://angular-ui.github.io/bootstrap/#/rating
-                their script file is included below
-                -->
+                <form ng-submit="addComment()">
+
+                    <div class="form-group">
+                        <label for="comment-title">Title</label>
+                        <input type="text" id="comment-title" class="form-control"
+                                placeholder="Title your Comment" ng-model="newComment.title"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comment-name">Name</label>
+                        <input type="text" id="comment-name" class="form-control"
+                               placeholder="What is your name?" ng-model="newComment.name"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comment-body">Body</label>
+                        <input type="text" id="comment-body" class="form-control"
+                               placeholder="Type your comment" ng-model="newComment.body"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rating</label>
+                        <rating max="5" ng-model="newComment.rating"></rating>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" ng-disabled="inserting">Add comment</button>
+                        <img src="img/ajax-spinner.gif" ng-if="inserting"/>
+                    </div>
+                </form>
             </section>
 
             <section>
                 <h2>Comments</h2>
-                <!-- 
-                display existing comments here
-                each comment should also have UI allowing the user to vote up/down the comment
-                as well as delete it
-                 -->
-            </section>
+                <div ng-if="!comments.length">No comments yet! Be the first to review this!</div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Name</th>
+                        <th>Body</th>
+                        <th>Rating</th>
+                        <th>Score</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="comment in comments" ng-class="{delete: comment.delete}">
+                        <td>{{comment.title}}</td>
+                        <td>{{comment.name}}</td>
+                        <td>{{comment.body}}</td>
+                        <td>
+                            <rating max="5" ng-model="comment.rating" ng-change="updateComment(comment)"
+                             readonly="comment.delete"></rating>
+                        </td>
+                        <td>
+                          {{comment.score}}
+                          <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementScore(comment, 1)"></span>
+                          <span class="glyphicon glyphicon-thumbs-down" ng-click="incrementScore(comment, -1)"></span>
+                        </td>
+                        <td>
+                            <button class="btn btn-secondary" ng-click="deleteComment(comment)" ng-disabled="inserting">Delete Comment</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
+            </section>
         </main>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
