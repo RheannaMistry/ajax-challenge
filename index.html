@@ -50,7 +50,7 @@
                         <rating max="5" ng-model="newComment.rating"></rating>
                     </div>
 
-                    <div class="form-group">
+                     <div class="form-group">
                         <button type="submit" class="btn btn-primary" ng-disabled="inserting">Add comment</button>
                         <img src="img/ajax-spinner.gif" ng-if="inserting"/>
                     </div>
@@ -60,38 +60,39 @@
             <section>
                 <h2>Comments</h2>
                 <div ng-if="!comments.length">No comments yet! Be the first to review this!</div>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Name</th>
-                        <th>Body</th>
-                        <th>Rating</th>
-                        <th>Score</th>
-                        <th>Delete</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="comment in comments" ng-class="{delete: comment.delete}">
-                        <td>{{comment.title}}</td>
-                        <td>{{comment.name}}</td>
-                        <td>{{comment.body}}</td>
-                        <td>
-                            <rating max="5" ng-model="comment.rating" ng-change="updateComment(comment)"
-                             readonly="comment.delete"></rating>
-                        </td>
-                        <td>
-                          {{comment.score}}
-                          <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementScore(comment, 1)"></span>
-                          <span class="glyphicon glyphicon-thumbs-down" ng-click="incrementScore(comment, -1)"></span>
-                        </td>
-                        <td>
-                            <button class="btn btn-secondary" ng-click="deleteComment(comment)" ng-disabled="inserting">Delete Comment</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
+                <div ng-if="comments.length">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Name</th>
+                            <th>Body</th>
+                            <th>Rating</th>
+                            <th>Score</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="comment in comments" ng-class="{delete: comment.delete}">
+                            <td>{{comment.title}}</td>
+                            <td>{{comment.name}}</td>
+                            <td>{{comment.body}}</td>
+                            <td>
+                                <rating max="5" ng-model="comment.rating" ng-change="updateComment(comment)"
+                                 readonly="comment.delete"></rating>
+                            </td>
+                            <td>
+                              {{comment.score}}
+                              <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementScore(comment, 1)"></span>
+                              <span class="glyphicon glyphicon-thumbs-down" ng-click="incrementScore(comment, -1)"></span>
+                            </td>
+                            <td>
+                                <button class="btn btn-secondary" ng-click="deleteComment(comment)" ng-disabled="inserting">Delete Comment</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </main>
 

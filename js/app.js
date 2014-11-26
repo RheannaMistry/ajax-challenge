@@ -10,7 +10,6 @@ angular.module('CommentApp', ['ui.bootstrap'])
 
     .controller('CommentController', function($scope, $http) {
         $scope.refreshComments = function() {
-            $scope.loading = true;
             $http.get(commentsUrl + '?order=-score')
                 .success(function (data) {
                     $scope.comments = data.results;
@@ -21,7 +20,6 @@ angular.module('CommentApp', ['ui.bootstrap'])
     $scope.newComment = {score: 0};
 
     $scope.addComment = function() {
-
         $scope.inserting = true;
         $http.post(commentsUrl, $scope.newComment)
             .success(function (responseData) {
@@ -32,7 +30,6 @@ angular.module('CommentApp', ['ui.bootstrap'])
             })
             .finally(function () {
                 $scope.inserting = false;
-                $scope.loading = false;
             });
 
     };
@@ -44,7 +41,6 @@ angular.module('CommentApp', ['ui.bootstrap'])
     };
 
     $scope.deleteComment = function(comment) {
-        $scope.loading = true;
         $scope.inserting = true;
         $http.delete(commentsUrl + '/' +comment.objectId)
             .success(function() {
@@ -53,7 +49,6 @@ angular.module('CommentApp', ['ui.bootstrap'])
                 $scope.refreshComments();
                 alert('Comment is deleted');
                 $scope.inserting = false;
-                $scope.loading = false;
             });
     };
 
@@ -67,17 +62,12 @@ angular.module('CommentApp', ['ui.bootstrap'])
                     amount: amount
                 }
             };
-            $scope.updating = true;
             $http.put(commentsUrl + '/' + comment.objectId, postData)
                 .success(function (respData) {
                     comment.score = respData.score;
                 })
                 .error(function (err) {
                     console.log(err);
-                })
-                .finally(function () {
-                    $scope.refreshComments();
-                    $scope.updating = false;
                 });
         }
     };
