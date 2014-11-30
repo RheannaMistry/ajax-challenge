@@ -20,18 +20,23 @@ angular.module('CommentApp', ['ui.bootstrap'])
     $scope.newComment = {score: 0};
 
     $scope.addComment = function() {
-        $scope.inserting = true;
-        $http.post(commentsUrl, $scope.newComment)
-            .success(function (responseData) {
-                $scope.newComment.objectId = responseData.objectId;
-                $scope.comments.push($scope.newComment);
-                $scope.newComment = {score: 0};
-                console.log($scope.comments);
-            })
-            .finally(function () {
-                $scope.inserting = false;
-            });
-
+        if (document.getElementById("comment-title").value == "" ||
+            document.getElementById("comment-name").value == "" ||
+            document.getElementById("comment-body").value == "") {
+            alert("Your must give your comment a title, name, and body!")
+        } else {
+            $scope.inserting = true;
+            $http.post(commentsUrl, $scope.newComment)
+                .success(function (responseData) {
+                    $scope.newComment.objectId = responseData.objectId;
+                    $scope.comments.push($scope.newComment);
+                    $scope.newComment = {score: 0};
+                    console.log($scope.comments);
+                })
+                .finally(function () {
+                    $scope.inserting = false;
+                });
+        }
     };
 
     $scope.updateComment = function(comment) {
